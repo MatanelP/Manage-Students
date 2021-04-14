@@ -51,18 +51,23 @@ void best_student (Student *start, Student *end)
           best_student_p->id, best_student_p->grade, best_student_p->age);
 }
 
-void bubble_sort (Student *start, Student *end)
+void swap_students (Student *student1, Student *student2)
 {
   Student temp;
+  temp = *student1;
+  *student1 = *student2;
+  *student2 = temp;
+}
+void bubble_sort (Student *start, Student *end)
+{
+
   for (int i = 0; i < end - start; i++)
     {
       for (Student *j = start; j != end - i; j++)
         {
           if (j->grade > (j + 1)->grade)
             {
-              temp = *j;
-              *j = *(j + 1);
-              *(j + 1) = temp;
+              swap_students (j, j + 1);
             }
         }
     }
@@ -70,21 +75,16 @@ void bubble_sort (Student *start, Student *end)
 
 Student *partition (Student *start, Student *end)
 {
-  Student temp;
   Student *pivot = start - 1;
   for (Student *j = start; j != end; j++)
     {
       if (j->age <= end->age)
         {
           pivot++;
-          temp = *j;
-          *j = *pivot;
-          *pivot = temp;
+          swap_students (j, pivot);
         }
     }
-  temp = *end;
-  *end = *(pivot + 1);
-  *(pivot + 1) = temp;
+  swap_students (end, pivot + 1);
   return (pivot + 1);
 }
 
@@ -200,8 +200,8 @@ int main (int argc, char *argv[])
 {
   char *task = argv[1];
   if (argc != 2 || (strcmp (task, BEST_TASK) != 0
-                   && strcmp (task, BUBBLE_TASK) != 0
-                   && strcmp (task, QUICK_TASK) != 0))
+                    && strcmp (task, BUBBLE_TASK) != 0
+                    && strcmp (task, QUICK_TASK) != 0))
     {
       printf (USAGE_ERR_MSG);
       return EXIT_FAILURE;
