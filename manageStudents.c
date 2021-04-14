@@ -4,8 +4,11 @@
 // Name: Matanel Pataki
 //
 // ID: 205951023
+//
+// A program to store and sort students information (id, grade, age).
 //*********************
 
+// Includes:
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -15,34 +18,41 @@
 #define QUICK_TASK "quick"
 #define BUFFER_SIZE 60
 
-//Messages:
+// Messages:
 #define GET_STUDENTS_NUM_MSG "Enter number of students. Then enter\n"
 #define GET_STUDENT_INFO_MSG "Enter student info. Then enter\n"
 #define BAD_ID_ERR_MSG "ERROR: Id must've 10 digits and can't start with 0.\n"
 #define BAD_GRADE_ERR_MSG "ERROR: Grade should  between 0-100 (includes).\n"
 #define BAD_AGE_ERR_MSG "ERROR: Age should be between 18 and 120 (includes).\n"
 #define BEST_STUDENT_IS_MSG "best student info is: %ld,%d,%d\n"
+#define USAGE_ERR_MSG "USAGE: Please choose a task (best\\bubble\\quick).\n"
+#define BAD_STUDENT_NUM_ERR_MSG "ERROR: Please enter a natural number.\n"
+
+// Values:
 #define GRADE_MIN 0
 #define GRADE_MAX 100
 #define AGE_MIN 18
 #define AGE_MAX 120
 #define ID_NUM_OF_DIGITS 10
-#define USAGE_ERR_MSG "USAGE: Please choose a task (best\\bubble\\quick).\n"
 #define ONE_DIGIT_NUM 9
 #define TEN 10
-#define BAD_STUDENT_NUM_ERR_MSG "ERROR: Please enter a natural number.\n"
+
 typedef struct Student {
   int age, grade;
   long int id;
-  float rank;
+  float rank; //will help choose the best student
 } Student;
 
 void best_student (Student *start, Student *end)
+/// This function will go through the students one by one and will print
+/// the best one (best = grade/age is the highest).
+/// \param start is a pointer to the start of the students array.
+/// \param end s a pointer to the end of the students array.
 {
   Student *best_student_p = start;
   while (start != end)
     {
-      start++;
+      start++; //pointer arithmetics, will move a whole index in the array
       if (start->rank > best_student_p->rank)
         {
           best_student_p = start;
@@ -53,15 +63,21 @@ void best_student (Student *start, Student *end)
 }
 
 void swap_students (Student *student1, Student *student2)
+/// This function will swap two given student position in the student array.
+/// \param student1 is a pointer to the first student.
+/// \param student2 is a pointer to the second student.
 {
   Student temp;
   temp = *student1;
   *student1 = *student2;
   *student2 = temp;
 }
-void bubble_sort (Student *start, Student *end)
-{
 
+void bubble_sort (Student *start, Student *end)
+/// This function will use bubble sort to sort the students array by grade.
+/// \param start is a pointer to the start of the students array.
+/// \param end s a pointer to the end of the students array.
+{
   for (int i = 0; i < end - start; i++)
     {
       for (Student *j = start; j != end - i; j++)
@@ -75,6 +91,11 @@ void bubble_sort (Student *start, Student *end)
 }
 
 Student *partition (Student *start, Student *end)
+/// This function is the helper for the quick-sort function.
+/// For more info: https://www.youtube.com/watch?v=PgBzjlCcFvc.
+/// \param start is a pointer to the start of the students array.
+/// \param end s a pointer to the end of the students array.
+/// \return the pivot point (the partition).
 {
   Student *pivot = start - 1;
   for (Student *j = start; j != end; j++)
@@ -90,6 +111,10 @@ Student *partition (Student *start, Student *end)
 }
 
 void quick_sort (Student *start, Student *end)
+/// A recursive function that sort the students array by age.
+/// For more info: https://www.youtube.com/watch?v=PgBzjlCcFvc.
+/// \param start is a pointer to the start of the students array.
+/// \param end s a pointer to the end of the students array.
 {
   if (end <= start)
     {
@@ -102,6 +127,9 @@ void quick_sort (Student *start, Student *end)
 }
 
 int get_digits_num (long id)
+/// This function return the number of digits in an long.
+/// \param id is the representation of a student's ID.
+/// \return an int, the num of digits.
 {
   int r = 1;
   while (id > ONE_DIGIT_NUM)
@@ -113,6 +141,11 @@ int get_digits_num (long id)
 }
 
 int check_student_info (long id, int grade, int age)
+/// This function check the validity of the student info.
+/// \param id is the representation of a student's ID.
+/// \param grade is the representation of a student's grade.
+/// \param age is the representation of a student's age.
+/// \return 1 - problem with id, 2 - problem with grade, 3 - problem with age.
 {
 
   if (get_digits_num (id) != ID_NUM_OF_DIGITS)
@@ -127,26 +160,41 @@ int check_student_info (long id, int grade, int age)
     {
       return 3;
     }
-  return 0;
+  return 0; //no problem found.
 }
 
 void print_students (int num_of_students, Student *students)
+/// This function will go through the student's array and will print is one
+/// student at a time according to the order in the array.
+/// \param num_of_students  is the representation of a students array's length.
+/// \param students is a pointer for the students array.
 {
   for (int i = 0; i < num_of_students; i++)
     {
       printf ("%ld,%d,%d\n", students[i].id,
               students[i].grade, students[i].age);
     }
+
 }
 int get_user_input (char *task)
+/// This function is getting the input from the user using the console.
+/// If the given info is not valid, the function will keep asking for info.
+/// \param task is the current task being preformed (quick/bubble/quick)
+/// \return the right exit-code.
 {
+  // Variables declarations:
   int num_of_students, grade, age;
   int long id;
-
   char user_input[BUFFER_SIZE];
+  int counter = 0;
+
+
+  // Getting the total amount of students:
   printf (GET_STUDENTS_NUM_MSG);
   fgets (user_input, BUFFER_SIZE, stdin);
   sscanf (user_input, "%d", &num_of_students);
+
+  // if the number of students is invalid, ask again:
   while (num_of_students <= 0)
     {
       printf (BAD_STUDENT_NUM_ERR_MSG);
@@ -154,23 +202,27 @@ int get_user_input (char *task)
       fgets (user_input, BUFFER_SIZE, stdin);
       sscanf (user_input, "%d", &num_of_students);
     }
-  int counter = 0;
+
+  // Dynamic memory allocation for the students array:
   Student *students = malloc (sizeof (Student) * num_of_students);
-  if (students == NULL)
+  if (students == NULL) // in case malloc failed.
     {
       return EXIT_FAILURE;
     }
 
+  // A while loop to get all the students info for the array:
   while (counter < num_of_students)
     {
       printf (GET_STUDENT_INFO_MSG);
       fgets (user_input, BUFFER_SIZE, stdin);
-      if (user_input[0] == '0' || user_input[TEN+2]=='a')
+      if (user_input[0] == '0' || user_input[TEN + 2] == 'a') // Small bug fix.
         {
           printf (BAD_ID_ERR_MSG);
           continue;
         }
       sscanf (user_input, "%ld,%d,%d", &id, &grade, &age);
+
+      // Checking for the students info validity:
       switch (check_student_info (id, grade, age))
         {
           case 1:printf (BAD_ID_ERR_MSG);
@@ -181,7 +233,7 @@ int get_user_input (char *task)
           continue;
         }
 
-
+      // Saving the student's info in it's struct:
       students[counter].id = id;
       students[counter].grade = grade;
       students[counter].age = age;
@@ -190,6 +242,7 @@ int get_user_input (char *task)
       counter++;
     }
 
+  // Determining with task to preform, according to user input:
   if (strcmp (task, BEST_TASK) == 0) // best
     {
       best_student (students, students + num_of_students - 1);
@@ -206,7 +259,10 @@ int get_user_input (char *task)
       quick_sort (students, students + num_of_students - 1);
       print_students (num_of_students, students);
     }
+
+  // Freeing the allocated memory in the heep:
   free (students);
+
   return EXIT_SUCCESS;
 
 }
@@ -214,6 +270,8 @@ int get_user_input (char *task)
 int main (int argc, char *argv[])
 {
   char *task = argv[1];
+
+  // Making sure the program got the right arguments:
   if (argc != 2 || (strcmp (task, BEST_TASK) != 0
                     && strcmp (task, BUBBLE_TASK) != 0
                     && strcmp (task, QUICK_TASK) != 0))
@@ -221,5 +279,6 @@ int main (int argc, char *argv[])
       printf (USAGE_ERR_MSG);
       return EXIT_FAILURE;
     }
+
   return get_user_input (task);
 }
