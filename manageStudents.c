@@ -13,12 +13,8 @@
 #include <string.h>
 #include <stdlib.h>
 
-#define BEST_TASK "best"
-#define BUBBLE_TASK "bubble"
-#define QUICK_TASK "quick"
-#define BUFFER_SIZE 60
-
 // Messages:
+
 #define GET_STUDENTS_NUM_MSG "Enter number of students. Then enter\n"
 #define GET_STUDENT_INFO_MSG "Enter student info. Then enter\n"
 #define BAD_ID_ERR_MSG "ERROR: Id must've 10 digits and can't start with 0.\n"
@@ -27,8 +23,12 @@
 #define BEST_STUDENT_IS_MSG "best student info is: %ld,%d,%d\n"
 #define USAGE_ERR_MSG "USAGE: Please choose a task (best\\bubble\\quick).\n"
 #define BAD_STUDENT_NUM_ERR_MSG "ERROR: Please enter a natural number.\n"
-
 // Values:
+
+#define BEST_TASK "best"
+#define BUBBLE_TASK "bubble"
+#define QUICK_TASK "quick"
+#define BUFFER_SIZE 60
 #define GRADE_MIN 0
 #define GRADE_MAX 100
 #define AGE_MIN 18
@@ -37,7 +37,9 @@
 #define ONE_DIGIT_NUM 9
 #define TEN 10
 
-typedef struct Student {
+typedef struct Student
+/// A struct to represent a student in a university.
+{
   int age, grade;
   long int id;
   float rank; //will help choose the best student
