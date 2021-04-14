@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <limits.h>
 
 #define BEST_TASK "best"
 #define BUBBLE_TASK "bubble"
@@ -23,9 +22,15 @@
 #define BAD_GRADE_ERR_MSG "ERROR: Grade should be an integer between 0 and 100 (includes).\n"
 #define BAD_AGE_ERR_MSG "ERROR: Age should be an integer between 18 and 120 (includes).\n"
 #define BEST_STUDENT_IS_MSG "best student info is %ld,%d,%d\n"
+#define GRADE_MIN 0
+#define GRADE_MAX 100
+#define AGE_MIN 18
+#define AGE_MAX 120
+#define ID_NUM_OF_DIGITS 10
 typedef struct Student {
   int age, grade;
   long int id;
+  float rank;
 } Student;
 
 void best_student (Student *start, Student *end)
@@ -34,7 +39,7 @@ void best_student (Student *start, Student *end)
   while (start != end)
     {
       start++;
-      if (((start->grade) / (start->age)) > ((best_student_p->grade) / (best_student_p->age)))
+      if (start->rank > best_student_p->rank)
         {
           best_student_p = start;
         }
@@ -42,10 +47,26 @@ void best_student (Student *start, Student *end)
   printf (BEST_STUDENT_IS_MSG, best_student_p->id, best_student_p->grade, best_student_p->age);
 }
 
+void bubble_sort (Student *start, Student *end)
+{
+  Student temp;
+  for (int i = 0; i < end-start; i++)
+    {
+      for (Student *j = start; j != end - i; j++)
+        {
+          if (j->grade > (j + 1)->grade)
+            {
+              temp = *j;
+              *j = *(j + 1);
+              *(j + 1) = temp;
+            }
+        }
+    }
+
+}
 int get_digits_num (long id)
 {
   int r = 1;
-  if (id < 0) id = (id == INT_MIN) ? INT_MAX : -id;
   while (id > 9)
     {
       id /= 10;
@@ -56,22 +77,29 @@ int get_digits_num (long id)
 
 int check_student_info (long int id, int grade, int age)
 {
-  if (get_digits_num (id) != 10)//#todo: CAN I USE MATH FUNCTIONS?
+  if (get_digits_num (id) != ID_NUM_OF_DIGITS)
     {
       return 1;
     }
-  if (grade < 0 || grade > 100)
+  if (grade < GRADE_MIN || grade > GRADE_MAX)
     {
       return 2;
     }
-  if (age < 18 || age > 120)
+  if (age < AGE_MIN || age > AGE_MAX)
     {
       return 3;
     }
   return 0;
 }
 
-int find_best_student ()
+void print_students (int num_of_students, Student *students)
+{
+  for (int i = 0; i < num_of_students; i++)
+    {
+      printf ("%ld,%d,%d\n", students[i].id, students[i].grade, students[i].age);
+    }
+}
+int get_user_input (char *task)
 {
   int num_of_students, grade, age;
   long int id;
@@ -81,7 +109,7 @@ int find_best_student ()
   fgets (user_input, BUFFER_SIZE, stdin);
   sscanf (user_input, "%d", &num_of_students);
   int counter = 0;
-  Student *students = malloc (sizeof (Student) * num_of_students); //#todo: TEST MALLOCK AND FREE EVERTSHING
+  Student *students = malloc (sizeof (Student) * num_of_students);
   if (students == NULL)
     {
       return EXIT_FAILURE;
@@ -105,34 +133,32 @@ int find_best_student ()
       students[counter].id = id;
       students[counter].grade = grade;
       students[counter].age = age;
+      students[counter].rank = (float) grade / (float) age;
 
       counter++;
     }
 
-  best_student (students, students + num_of_students - 1);
-  free (students);
-
-}
-
-int main (int argc, char *argv[])
-{
-  char *task = argv[1];
-
   if (strcmp (task, BEST_TASK) == 0) // best
     {
-      find_best_student ();
+      best_student (students, students + num_of_students - 1);
     }
 
   if (strcmp (task, BUBBLE_TASK) == 0) // bubble
     {
-
+      bubble_sort (students, students + num_of_students - 1);
+      print_students (num_of_students, students);
     }
 
   if (strcmp (task, QUICK_TASK) == 0) // quick
     {
 
     }
+  free (students);
+  return EXIT_SUCCESS;
 
-  return 0;
+}
 
+int main (int argc, char *argv[])
+{
+  return get_user_input (argv[1]);
 }
