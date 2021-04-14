@@ -31,7 +31,6 @@
 #define ONE_DIGIT_NUM 9
 #define TEN 10
 #define BAD_STUDENT_NUM_ERR_MSG "ERROR: Please enter a natural number.\n"
-#define BUFFER_FOR_ID 10
 typedef struct Student {
   int age, grade;
   long int id;
