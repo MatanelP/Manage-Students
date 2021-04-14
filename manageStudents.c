@@ -14,7 +14,6 @@
 #include <stdlib.h>
 
 // Messages:
-
 #define GET_STUDENTS_NUM_MSG "Enter number of students. Then enter\n"
 #define GET_STUDENT_INFO_MSG "Enter student info. Then enter\n"
 #define BAD_ID_ERR_MSG "ERROR: Id must've 10 digits and can't start with 0.\n"
@@ -23,8 +22,8 @@
 #define BEST_STUDENT_IS_MSG "best student info is: %ld,%d,%d\n"
 #define USAGE_ERR_MSG "USAGE: Please choose a task (best\\bubble\\quick).\n"
 #define BAD_STUDENT_NUM_ERR_MSG "ERROR: Please enter a natural number.\n"
-// Values:
 
+// Values:
 #define BEST_TASK "best"
 #define BUBBLE_TASK "bubble"
 #define QUICK_TASK "quick"
