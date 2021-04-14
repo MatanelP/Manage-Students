@@ -19,7 +19,7 @@
 #define GET_STUDENTS_NUM_MSG "Enter number of students. Then enter\n"
 #define GET_STUDENT_INFO_MSG "Enter student info. Then enter\n"
 #define BAD_ID_ERR_MSG "ERROR: Id must have 10 digits and can not start with 0.\n"
-#define BAD_GRADE_ERR_MSG "ERROR: Grade should be an integer between 0 and 100 (includes).\n"
+#define BAD_GRADE_ERR_MSG "ERROR: Grade should  between 0 and 100 (includes).\n"
 #define BAD_AGE_ERR_MSG "ERROR: Age should be an integer between 18 and 120 (includes).\n"
 #define BEST_STUDENT_IS_MSG "best student info is: %ld,%d,%d\n"
 #define GRADE_MIN 0
