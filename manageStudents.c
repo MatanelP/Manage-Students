@@ -21,7 +21,7 @@
 #define BAD_ID_ERR_MSG "ERROR: Id must have 10 digits and can not start with 0.\n"
 #define BAD_GRADE_ERR_MSG "ERROR: Grade should be an integer between 0 and 100 (includes).\n"
 #define BAD_AGE_ERR_MSG "ERROR: Age should be an integer between 18 and 120 (includes).\n"
-#define BEST_STUDENT_IS_MSG "best student info is %ld,%d,%d\n"
+#define BEST_STUDENT_IS_MSG "best student info is: %ld,%d,%d\n"
 #define GRADE_MIN 0
 #define GRADE_MAX 100
 #define AGE_MIN 18
@@ -199,9 +199,9 @@ int get_user_input (char *task)
 int main (int argc, char *argv[])
 {
   char *task = argv[1];
-  if (argc != 2 || strcmp (task, BEST_TASK) != 0
+  if (argc != 2 || (strcmp (task, BEST_TASK) != 0
                    && strcmp (task, BUBBLE_TASK) != 0
-                   && strcmp (task, QUICK_TASK) != 0)
+                   && strcmp (task, QUICK_TASK) != 0))
     {
       printf (USAGE_ERR_MSG);
       return EXIT_FAILURE;
