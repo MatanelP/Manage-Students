@@ -18,16 +18,16 @@
 //Messages:
 #define GET_STUDENTS_NUM_MSG "Enter number of students. Then enter\n"
 #define GET_STUDENT_INFO_MSG "Enter student info. Then enter\n"
-#define BAD_ID_ERR_MSG "ERROR: Id must have 10 digits and can not start with 0.\n"
-#define BAD_GRADE_ERR_MSG "ERROR: Grade should  between 0 and 100 (includes).\n"
-#define BAD_AGE_ERR_MSG "ERROR: Age should be an integer between 18 and 120 (includes).\n"
+#define BAD_ID_ERR_MSG "ERROR: Id must've 10 digits and can't start with 0.\n"
+#define BAD_GRADE_ERR_MSG "ERROR: Grade should  between 0-100 (includes).\n"
+#define BAD_AGE_ERR_MSG "ERROR: Age should be between 18 and 120 (includes).\n"
 #define BEST_STUDENT_IS_MSG "best student info is: %ld,%d,%d\n"
 #define GRADE_MIN 0
 #define GRADE_MAX 100
 #define AGE_MIN 18
 #define AGE_MAX 120
 #define ID_NUM_OF_DIGITS 10
-#define USAGE_ERR_MSG "USAGE: Please choose a one valid task (best\\bubble\\quick).\n"
+#define USAGE_ERR_MSG "USAGE: Please choose a task (best\\bubble\\quick).\n"
 #define ONE_DIGIT_NUM 9
 #define TEN 10
 #define BAD_STUDENT_NUM_ERR_MSG "ERROR: Please enter a natural number.\n"
