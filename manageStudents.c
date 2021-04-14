@@ -31,6 +31,7 @@
 #define ONE_DIGIT_NUM 9
 #define TEN 10
 #define BAD_STUDENT_NUM_ERR_MSG "ERROR: Please enter a natural number.\n"
+#define BUFFER_FOR_ID 10
 typedef struct Student {
   int age, grade;
   long int id;
@@ -112,8 +113,9 @@ int get_digits_num (long id)
   return r;
 }
 
-int check_student_info (long int id, int grade, int age)
+int check_student_info (long id, int grade, int age)
 {
+
   if (get_digits_num (id) != ID_NUM_OF_DIGITS)
     {
       return 1;
@@ -140,7 +142,7 @@ void print_students (int num_of_students, Student *students)
 int get_user_input (char *task)
 {
   int num_of_students, grade, age;
-  long int id;
+  int long id;
 
   char user_input[BUFFER_SIZE];
   printf (GET_STUDENTS_NUM_MSG);
@@ -164,6 +166,11 @@ int get_user_input (char *task)
     {
       printf (GET_STUDENT_INFO_MSG);
       fgets (user_input, BUFFER_SIZE, stdin);
+      if (user_input[0] == '0')
+        {
+          printf (BAD_ID_ERR_MSG);
+          continue;
+        }
       sscanf (user_input, "%ld,%d,%d", &id, &grade, &age);
       switch (check_student_info (id, grade, age))
         {
@@ -174,6 +181,7 @@ int get_user_input (char *task)
           case 3:printf (BAD_AGE_ERR_MSG);
           continue;
         }
+
 
       students[counter].id = id;
       students[counter].grade = grade;
