@@ -27,6 +27,9 @@
 #define AGE_MIN 18
 #define AGE_MAX 120
 #define ID_NUM_OF_DIGITS 10
+#define USAGE_ERR_MSG "USAGE: Please choose a one valid task (best\\bubble\\quick)\n"
+#define ONE_DIGIT_NUM 9
+#define TEN 10
 typedef struct Student {
   int age, grade;
   long int id;
@@ -44,13 +47,14 @@ void best_student (Student *start, Student *end)
           best_student_p = start;
         }
     }
-  printf (BEST_STUDENT_IS_MSG, best_student_p->id, best_student_p->grade, best_student_p->age);
+  printf (BEST_STUDENT_IS_MSG,
+          best_student_p->id, best_student_p->grade, best_student_p->age);
 }
 
 void bubble_sort (Student *start, Student *end)
 {
   Student temp;
-  for (int i = 0; i < end-start; i++)
+  for (int i = 0; i < end - start; i++)
     {
       for (Student *j = start; j != end - i; j++)
         {
@@ -62,14 +66,46 @@ void bubble_sort (Student *start, Student *end)
             }
         }
     }
+}
+
+Student *partition (Student *start, Student *end)
+{
+  Student temp;
+  Student *pivot = start - 1;
+  for (Student *j = start; j != end; j++)
+    {
+      if (j->age <= end->age)
+        {
+          pivot++;
+          temp = *j;
+          *j = *pivot;
+          *pivot = temp;
+        }
+    }
+  temp = *end;
+  *end = *(pivot + 1);
+  *(pivot + 1) = temp;
+  return (pivot + 1);
+}
+
+void quick_sort (Student *start, Student *end)
+{
+  if (end <= start)
+    {
+      return;
+    }
+  Student *pivot = partition (start, end);
+  quick_sort (start, pivot - 1);
+  quick_sort (pivot + 1, end);
 
 }
+
 int get_digits_num (long id)
 {
   int r = 1;
-  while (id > 9)
+  while (id > ONE_DIGIT_NUM)
     {
-      id /= 10;
+      id /= TEN;
       r++;
     }
   return r;
@@ -96,7 +132,8 @@ void print_students (int num_of_students, Student *students)
 {
   for (int i = 0; i < num_of_students; i++)
     {
-      printf ("%ld,%d,%d\n", students[i].id, students[i].grade, students[i].age);
+      printf ("%ld,%d,%d\n", students[i].id,
+              students[i].grade, students[i].age);
     }
 }
 int get_user_input (char *task)
@@ -151,7 +188,8 @@ int get_user_input (char *task)
 
   if (strcmp (task, QUICK_TASK) == 0) // quick
     {
-
+      quick_sort (students, students + num_of_students - 1);
+      print_students (num_of_students, students);
     }
   free (students);
   return EXIT_SUCCESS;
@@ -160,5 +198,13 @@ int get_user_input (char *task)
 
 int main (int argc, char *argv[])
 {
-  return get_user_input (argv[1]);
+  char *task = argv[1];
+  if (argc != 2 || strcmp (task, BEST_TASK) != 0
+                   && strcmp (task, BUBBLE_TASK) != 0
+                   && strcmp (task, QUICK_TASK) != 0)
+    {
+      printf (USAGE_ERR_MSG);
+      return EXIT_FAILURE;
+    }
+  return get_user_input (task);
 }
