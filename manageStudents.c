@@ -165,7 +165,7 @@ int get_user_input (char *task)
     {
       printf (GET_STUDENT_INFO_MSG);
       fgets (user_input, BUFFER_SIZE, stdin);
-      if (user_input[0] == '0')
+      if (user_input[0] == '0' || user_input[12]=='a')
         {
           printf (BAD_ID_ERR_MSG);
           continue;
