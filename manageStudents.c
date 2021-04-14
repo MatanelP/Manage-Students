@@ -27,9 +27,10 @@
 #define AGE_MIN 18
 #define AGE_MAX 120
 #define ID_NUM_OF_DIGITS 10
-#define USAGE_ERR_MSG "USAGE: Please choose a one valid task (best\\bubble\\quick)\n"
+#define USAGE_ERR_MSG "USAGE: Please choose a one valid task (best\\bubble\\quick).\n"
 #define ONE_DIGIT_NUM 9
 #define TEN 10
+#define BAD_STUDENT_NUM_ERR_MSG "ERROR: Please enter a natural number.\n"
 typedef struct Student {
   int age, grade;
   long int id;
@@ -145,6 +146,13 @@ int get_user_input (char *task)
   printf (GET_STUDENTS_NUM_MSG);
   fgets (user_input, BUFFER_SIZE, stdin);
   sscanf (user_input, "%d", &num_of_students);
+  while (num_of_students <= 0)
+    {
+      printf (BAD_STUDENT_NUM_ERR_MSG);
+      printf (GET_STUDENTS_NUM_MSG);
+      fgets (user_input, BUFFER_SIZE, stdin);
+      sscanf (user_input, "%d", &num_of_students);
+    }
   int counter = 0;
   Student *students = malloc (sizeof (Student) * num_of_students);
   if (students == NULL)
