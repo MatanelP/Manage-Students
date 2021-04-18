@@ -181,7 +181,7 @@ void print_students (int num_of_students, Student *students)
 
 int check_user_string (const char *user_input)
 /// This function checks the chars of the user input string for non-numbers
-/// param user_input is a string for the users input;
+/// \param user_input is a string for the user's input.
 /// \return 1 - problem with id, 2 - problem with grade, 3 - problem with age
 ///         0 - problem with num of commas, -1 - all good.
 {
