@@ -17,7 +17,7 @@
 #define GET_STUDENTS_NUM_MSG "Enter number of students. Then enter\n"
 #define GET_STUDENT_INFO_MSG "Enter student info. Then enter\n"
 #define BAD_ID_ERR_MSG "ERROR: Id must've 10 digits and can't start with 0.\n"
-#define BAD_GRADE_ERR_MSG "ERROR: Grade should  between 0-100 (includes).\n"
+#define BAD_GRADE_ERR_MSG "ERROR: Grade should between 0-100 (includes).\n"
 #define BAD_AGE_ERR_MSG "ERROR: Age should be between 18 and 120 (includes).\n"
 #define BEST_STUDENT_IS_MSG "best student info is: %ld,%d,%d\n"
 #define USAGE_ERR_MSG "USAGE: Please choose a task (best\\bubble\\quick).\n"
@@ -35,6 +35,7 @@
 #define ID_NUM_OF_DIGITS 10
 #define ONE_DIGIT_NUM 9
 #define TEN 10
+#define NUM_OF_WANTED_COMMAS 3
 
 typedef struct Student
 /// A struct to represent a student in a university.
@@ -177,6 +178,41 @@ void print_students (int num_of_students, Student *students)
     }
 
 }
+
+int check_user_string (const char *user_input)
+/// This function checks the chars of the user input string for non-numbers
+/// \param user_input is a string for the user's input;
+/// \return 1 - problem with id, 2 - problem with grade, 3 - problem with age
+///         0 - problem with num of commas, -1 - all good.
+{
+  int comma_counter = 1;
+  if (user_input[0] == '0')
+    {
+      return comma_counter;
+    }
+  for (size_t i = 0; user_input[i] != '\0'; i++)
+    {
+      if (user_input[i] == '\n')
+        {
+          continue;
+        }
+      if (user_input[i] == ',') //char == ','
+        {
+          comma_counter++;
+          continue;
+        }
+      if (user_input[i] < '0' || '9' < user_input[i]) //if char not a digit
+        {
+          return comma_counter;
+        }
+    }
+  if (comma_counter != NUM_OF_WANTED_COMMAS)
+    {
+      return 0;
+    }
+  return -1;
+}
+
 int get_user_input (char *task)
 /// This function is getting the input from the user using the console.
 /// If the given info is not valid, the function will keep asking for info.
@@ -216,11 +252,18 @@ int get_user_input (char *task)
     {
       printf (GET_STUDENT_INFO_MSG);
       fgets (user_input, BUFFER_SIZE, stdin);
-      if (user_input[0] == '0' || user_input[TEN + 2] == 'a') // Small bug fix.
+
+      switch (check_user_string (user_input))
         {
-          printf (BAD_ID_ERR_MSG);
+          case 0 :
+          case 1 :printf (BAD_ID_ERR_MSG);
+          continue;
+          case 2:printf (BAD_GRADE_ERR_MSG);
+          continue;
+          case 3:printf (BAD_AGE_ERR_MSG);
           continue;
         }
+
       sscanf (user_input, "%ld,%d,%d", &id, &grade, &age);
 
       // Checking for the students info validity:
