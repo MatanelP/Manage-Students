@@ -1,10 +1,5 @@
 //*********************
-// Exercise  2
-//
 // Name: Matanel Pataki
-//
-// ID: 205951023
-//
 // A program to store and sort students information (id, grade, age).
 //*********************
 
